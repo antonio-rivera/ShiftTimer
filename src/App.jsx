@@ -1,10 +1,22 @@
 import React from "react";
+import styled from "styled-components";
+import LeftPage from "./components/LeftPage";
+import RightPage from "./components/RightPage";
+
+const Box = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  height: 100vh;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hi world</h1>
-    </div>
+    <>
+      <Box>
+        <LeftPage />
+        <RightPage />
+      </Box>
+    </>
   );
 }
 
