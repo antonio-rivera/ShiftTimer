@@ -3,6 +3,7 @@ import styled from "styled-components";
 import LeftPage from "./components/LeftPage";
 import RightPage from "./components/RightPage";
 
+//Styles
 const Box = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
