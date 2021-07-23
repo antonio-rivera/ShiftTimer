@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-//////////////Styles////////////////////////////////
+//////////////Style Components////////////////////////////////
 const Wrapper = styled.div`
   background: rgb(252, 176, 69);
   background: linear-gradient(
@@ -9,6 +9,12 @@ const Wrapper = styled.div`
     rgba(252, 176, 69, 1) 0%,
     rgba(253, 89, 29, 1) 100%
   );
+  display: flex;
+  flex-basis: 50%;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  overflow: auto;
 `;
 const Title = styled.h1`
   text-align: center;
