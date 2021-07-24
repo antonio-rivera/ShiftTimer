@@ -68,8 +68,8 @@ export default function LeftPage() {
         mapItems.set(nanoid(), {
           title: "",
           completed: "",
-          remaining: "",
-          original_estimate: "",
+          remaining: null,
+          estimate: "",
           timestamp: "00:00",
         })
       )
@@ -81,7 +81,7 @@ export default function LeftPage() {
       <Title>Devops Items</Title>
       <ItemContainer>
         {[...mapItems.keys()].map((key) => (
-          <DevItem key={key} />
+          <DevItem key={key} id={key} />
         ))}
       </ItemContainer>
       <AddButton onClick={addItem}>

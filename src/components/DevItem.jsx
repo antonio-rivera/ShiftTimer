@@ -1,5 +1,9 @@
 import React from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
+import { useAtom } from "jotai";
+import { devItems } from "../store/LeftAtoms";
+import dayjs from "dayjs";
 
 const Container = styled.div`
   width: 50%;
@@ -58,18 +62,49 @@ const ItemTitle = styled.input`
   }
 `;
 
-export default function DevItem() {
+export default function DevItem({ id }) {
+  const [items, setItems] = useAtom(devItems);
+
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    const newMap = items;
+    let modItem = items.get(id);
+    modItem[`${name}`] = value;
+    if (name === "completed") modItem["timestamp"] = dayjs().format("h:mm A");
+    let { completed, estimate } = modItem;
+    if (completed && estimate)
+      modItem["remaining"] = parseFloat(estimate) - parseFloat(completed);
+    else {
+      modItem["remaining"] = null;
+    }
+
+    newMap[id] = modItem;
+
+    setItems(new Map(newMap));
+  }
+
+  let { timestamp, remaining } = items.get(id);
+
   return (
     <Container>
-      <ItemTitle type="text" name="title" placeholder="Title goes here" />
+      <ItemTitle
+        type="text"
+        name="title"
+        placeholder="Title goes here"
+        onChange={(e) => handleChange(e)}
+      />
       <label htmlFor="completed">Completed: </label>
-      <Input type="text" name="completed" />
+      <Input type="text" name="completed" onChange={(e) => handleChange(e)} />
       <label htmlFor="remaining">Remaining: </label>
-      <ItemSpan>0</ItemSpan>
+      <ItemSpan>{remaining}</ItemSpan>
       <label htmlFor="estimate">Original Estimate:</label>
-      <Input type="text" name="estimate" />
+      <Input type="text" name="estimate" onChange={(e) => handleChange(e)} />
       <label htmlFor="lastupdate">Last Updated: </label>
-      <ItemSpan>00:00</ItemSpan>
+      <ItemSpan>{timestamp}</ItemSpan>
     </Container>
   );
 }
