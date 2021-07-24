@@ -31,7 +31,6 @@ const ItemContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   overflow-y: auto;
-  scroll-snap-type: proximity;
 `;
 const Title = styled.h1`
   text-align: center;
