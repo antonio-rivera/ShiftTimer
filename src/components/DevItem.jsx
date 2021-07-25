@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useAtom } from "jotai";
 import { devItems } from "../store/LeftAtoms";
 import dayjs from "dayjs";
-
+//Styles
 const Container = styled.div`
   width: 50%;
   min-height: 35%;
@@ -57,24 +57,26 @@ const ItemTitle = styled.input`
     outline: none;
   }
   &::placeholder {
-    line-height: 100px;
     color: #89caff4e;
   }
-`;
+`; ///////End Styles////////////
 
 export default function DevItem({ id }) {
   const [items, setItems] = useAtom(devItems);
 
-  useEffect(() => {
-    console.log(items);
-  }, [items]);
+  // useEffect(() => {
+  //   console.log(items);
+  // }, [items]);
 
+  //Funtion that manages all state changes for the devops item
   function handleChange(event) {
     const { name, value } = event.target;
     const newMap = items;
     let modItem = items.get(id);
     modItem[`${name}`] = value;
     if (name === "completed") modItem["timestamp"] = dayjs().format("h:mm A");
+
+    //Compute the remaining time
     let { completed, estimate } = modItem;
     if (completed && estimate)
       modItem["remaining"] = parseFloat(estimate) - parseFloat(completed);

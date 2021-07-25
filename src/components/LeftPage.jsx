@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
 import { devItems } from "../store/LeftAtoms";
 import DevItem from "./DevItem";
+import { connections } from "../store/CommonAtoms";
 
 //////////////Style Components////////////////////////////////
 const Wrapper = styled.div`
@@ -16,7 +17,6 @@ const Wrapper = styled.div`
   );
   display: flex;
   flex-basis: 50%;
-  height: 100%;
   flex-direction: column;
   align-items: center;
   padding: 0;
@@ -44,10 +44,9 @@ const AddButton = styled.button`
   background-color: #92c353;
   border: none;
   border-radius: 5px;
-  margin-left: 5px;
   position: fixed;
   bottom: 20px;
-  left: 0;
+  left: 10px;
   cursor: pointer;
 `;
 
@@ -61,11 +60,15 @@ const PlusSign = styled.span`
 /////////////////////////////////////////////////////
 
 export default function LeftPage() {
+  //Map to handle connections between devops items and timesheet items
+  const [connect, setConnect] = useAtom(connections);
+  //Array of devops items
   const [mapItems, setMapItems] = useAtom(devItems);
   function addItem() {
+    const newDevItemId = nanoid();
     setMapItems(
       new Map(
-        mapItems.set(nanoid(), {
+        mapItems.set(newDevItemId, {
           title: "",
           completed: "",
           remaining: null,
@@ -74,6 +77,8 @@ export default function LeftPage() {
         })
       )
     );
+    //Add id of new item to list of connections so it can later connect to a sheet item
+    setConnect(new Map(connect.set(newDevItemId, null)));
   }
 
   return (
