@@ -4,26 +4,27 @@ import styled from "styled-components";
 import { sheetItems } from "../store/RightAtoms";
 
 const Container = styled.div`
+  position: relative;
   width: 90%;
-  height: 17.5%;
-  border-bottom: 1px solid #888888;
-  padding-bottom: 10px;
+  min-height: 15%;
+  padding: 15px 0 20px 0;
+  border-bottom: 1px groove #00000068;
   display: flex;
-  justify-content: space-between;
   background-color: #dfdfdf;
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex-basis: 40%;
-  padding: 20px 0 0 10px;
+  justify-content: center;
+  width: 30%;
+  height: 50%;
+  padding-left: 10px;
 `;
 
 const ItemTitle = styled.input`
   font-weight: bold;
-  font-size: 24px;
+  font-size: 16px;
   border: none;
   outline: none;
   background-color: #dfdfdf;
@@ -39,22 +40,23 @@ const ItemTitle = styled.input`
 
 const TimeContainer = styled.div`
   display: flex;
-  flex-basis: 40%;
-  justify-content: start;
+  height: 70%;
+  width: 70%;
+  justify-content: space-around;
   align-items: center;
 `;
 
 const TimeInput = styled.input`
-  width: 25%;
+  width: 16%;
   text-align: center;
-  height: 50%;
+  height: 100%;
   background-color: transparent;
-  color: black;
+  color: #505050;
   font-size: 24px;
   font-weight: bold;
   border-radius: 5px;
   border: 1px solid #888888;
-  box-shadow: 1px 5px 9px #888888;
+  box-shadow: 1px 1px 1px #888888;
 
   &:focus {
     outline: none;
@@ -65,6 +67,41 @@ const TimeInput = styled.input`
   }
 `;
 
+const ConnectButton = styled.button`
+  width: fit-content;
+  text-align: center;
+  background-color: transparent;
+  color: #505050;
+  font-size: 15px;
+  height: 30px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid #888888;
+  box-shadow: 1px 1px 1px #888888;
+`;
+
+const TimeLabel = styled.span`
+  color: #505050;
+  font-size: 18px;
+`;
+
+const DescInput = styled.textarea`
+  background-color: transparent;
+  width: 95%;
+  height: 23%;
+  resize: none;
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  border: none;
+  font-size: 14px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+///////////////////////////////////////
+
 export default function SheetItem() {
   //Array of sheet items
   const [Items, setItems] = useAtom(sheetItems);
@@ -73,12 +110,13 @@ export default function SheetItem() {
     <Container>
       <TextContainer>
         <ItemTitle placeholder="Entry Title" />
-        <p>Decription</p>
       </TextContainer>
-
       <TimeContainer>
         <TimeInput placeholder="0:00" />
+        <ConnectButton>Connect</ConnectButton>
+        <TimeLabel>Last Updated: 0:00</TimeLabel>
       </TimeContainer>
+      <DescInput placeholder="Description..." maxLength="75" />
     </Container>
   );
 }

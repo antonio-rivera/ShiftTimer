@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 80%;
+  height: 60%;
   width: 100%;
   justify-content: flex-start;
   align-items: center;
@@ -46,8 +46,8 @@ const AddButton = styled.button`
   border-radius: 5px;
   margin-left: 5px;
   position: fixed;
-  bottom: 20px;
-  right: 623px;
+  top: 15px;
+  right: 10px;
   cursor: pointer;
 `;
 
