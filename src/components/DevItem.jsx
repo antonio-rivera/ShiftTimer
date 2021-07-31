@@ -89,6 +89,7 @@ export default function DevItem({ id }) {
     setItems(new Map(newMap));
   }
 
+  //Grab props that should be displayed/rendered
   let { timestamp, remaining } = items.get(id);
 
   return (

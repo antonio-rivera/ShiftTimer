@@ -71,7 +71,7 @@ export default function RightPage() {
           title: "",
           description: "",
           duration: "",
-          timestamp: "00:00",
+          timestamp: "0:00",
         })
       )
     );
