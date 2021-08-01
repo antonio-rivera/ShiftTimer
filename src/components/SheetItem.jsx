@@ -5,9 +5,10 @@ import { sheetItems } from "../store/RightAtoms";
 import dayjs from "dayjs";
 import { connections } from "../store/CommonAtoms";
 import { devItems } from "../store/LeftAtoms";
-import Dropdown from "react-dropdown";
+import Select from "react-select";
 import { useEffect } from "react";
 
+///////////////Styles////////////////////////////////
 const Container = styled.div`
   position: relative;
   width: 90%;
@@ -55,7 +56,7 @@ const TimeInput = styled.input`
   width: 16%;
   text-align: center;
   height: 100%;
-  background-color: transparent;
+  background-color: white;
   color: #505050;
   font-size: 24px;
   font-weight: bold;
@@ -72,22 +73,27 @@ const TimeInput = styled.input`
   }
 `;
 
-// const ConnectButton = styled.button`
-//   width: fit-content;
-//   text-align: center;
-//   background-color: transparent;
-//   color: #505050;
-//   font-size: 15px;
-//   height: 30px;
-//   font-weight: bold;
-//   border-radius: 5px;
-//   border: 1px solid #888888;
-//   box-shadow: 1px 1px 1px #888888;
-// `;
+const ConnectButton = styled.div`
+  width: 27%;
+  text-align: center;
+  background-color: transparent;
+  color: #505050;
+  font-size: 15px;
+  height: fit-content;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid #888888;
+  box-shadow: 1px 1px 1px #888888;
+`;
 
 const TimeLabel = styled.span`
   color: #505050;
-  font-size: 18px;
+  font-size: 15px;
+  background-color: white;
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid #888888;
+  box-shadow: 1px 1px 1px #888888;
 `;
 
 const DescInput = styled.textarea`
@@ -116,13 +122,9 @@ export default function SheetItem({ id }) {
   //Dev items to modify
   const [opsItems, setOpsItems] = useAtom(devItems);
 
-  //Dev items to choose from
-  const options = atom([]);
-  const [getOptions, setGetOptions] = useAtom(options);
-
-  useEffect(() => {
-    if (opsItems.size) setGetOptions(getOptions.map((item) => item.title));
-  }, [sheetToDev]);
+  // const selectOptions = atom([]);
+  // const [options, setOptions] = useAtom(selectOptions);
+  let options = [...opsItems.values()];
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -150,7 +152,15 @@ export default function SheetItem({ id }) {
           placeholder="0:00"
           onChange={(e) => handleChange(e)}
         />
-        <Dropdown options={getOptions} placeholder="Connect" />
+        <ConnectButton>
+          <Select
+            options={options.map((obj) => {
+              return { label: obj.title, value: obj.title };
+            })}
+            placeholder="Connect"
+          />
+        </ConnectButton>
+
         <TimeLabel>Last Updated: {timestamp}</TimeLabel>
       </TimeContainer>
       <DescInput placeholder="Description..." maxLength="75" />
