@@ -81,7 +81,7 @@ export default function RightPage() {
       <Title>Timesheet</Title>
       <ItemContainer>
         {[...timeItems.keys()].map((key) => (
-          <SheetItem key={key} id={key} />
+          <SheetItem key={key} thisId={key} />
         ))}
       </ItemContainer>
 

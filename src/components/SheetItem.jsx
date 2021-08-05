@@ -56,7 +56,7 @@ const TimeInput = styled.input`
   width: 16%;
   text-align: center;
   height: 100%;
-  background-color: white;
+  background-color: #dfdfdf;
   color: #505050;
   font-size: 24px;
   font-weight: bold;
@@ -89,7 +89,7 @@ const ConnectButton = styled.div`
 const TimeLabel = styled.span`
   color: #505050;
   font-size: 15px;
-  background-color: white;
+  background-color: #dfdfdf;
   padding: 6px;
   border-radius: 5px;
   border: 1px solid #888888;
@@ -113,7 +113,7 @@ const DescInput = styled.textarea`
 
 ///////////////////////////////////////
 
-export default function SheetItem({ id }) {
+export default function SheetItem({ thisId }) {
   //Array of sheet items
   const [items, setItems] = useAtom(sheetItems);
 
@@ -122,24 +122,57 @@ export default function SheetItem({ id }) {
   //Dev items to modify
   const [opsItems, setOpsItems] = useAtom(devItems);
 
-  // const selectOptions = atom([]);
-  // const [options, setOptions] = useAtom(selectOptions);
-  let options = [...opsItems.values()];
+  //Options for the dropdown to connect to the devops items
+  let options = [];
+  opsItems.forEach((value, key) => {
+    options.push({ label: value.title, value: value.title, id: key });
+  });
+
+  //Styles for the dropdown button
+  const customStyles = {
+    control: (base) => ({
+      ...base,
+      backgroundColor: "#dfdfdf",
+    }),
+
+    dropdownIndicator: (base) => ({
+      ...base,
+      display: "none",
+    }),
+
+    valueContainer: (base) => ({
+      ...base,
+      justifyContent: "center",
+    }),
+  };
+
+  //Change functions
 
   function handleChange(event) {
     const { name, value } = event.target;
     const newMap = items;
-    let modItem = items.get(id);
+    let modItem = items.get(thisId);
     modItem[`${name}`] = value;
 
     modItem["timestamp"] = dayjs().format("h:mm A");
-    newMap[id] = modItem;
-
+    newMap[thisId] = modItem;
+    console.log(linkedId);
     setItems(new Map(newMap));
   }
 
+  function handleConnection({ id }) {
+    //id is the id for the devops item
+    //Function that handles the link between items
+    if (sheetToDev.has(id)) {
+      const newMap = sheetToDev;
+      newMap.set(id, thisId);
+
+      setSheetToDev(new Map(newMap));
+    }
+  }
+
   //Grab props that should be displayed/rendered
-  let { timestamp } = items.get(id);
+  let { timestamp } = items.get(thisId);
   return (
     <Container>
       <TextContainer>
@@ -154,10 +187,10 @@ export default function SheetItem({ id }) {
         />
         <ConnectButton>
           <Select
-            options={options.map((obj) => {
-              return { label: obj.title, value: obj.title };
-            })}
+            options={options}
             placeholder="Connect"
+            styles={customStyles}
+            onChange={(option) => handleConnection(option)}
           />
         </ConnectButton>
 
