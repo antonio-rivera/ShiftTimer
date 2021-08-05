@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { connections } from "../store/CommonAtoms";
 import { devItems } from "../store/LeftAtoms";
 import Select from "react-select";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 ///////////////Styles////////////////////////////////
 const Container = styled.div`
@@ -122,6 +122,9 @@ export default function SheetItem({ thisId }) {
   //Dev items to modify
   const [opsItems, setOpsItems] = useAtom(devItems);
 
+  //Id of linked item
+  const devId = useRef(null);
+
   //Options for the dropdown to connect to the devops items
   let options = [];
   opsItems.forEach((value, key) => {
@@ -156,9 +159,48 @@ export default function SheetItem({ thisId }) {
 
     modItem["timestamp"] = dayjs().format("h:mm A");
     newMap[thisId] = modItem;
-    console.log(linkedId);
+
     setItems(new Map(newMap));
   }
+
+  useEffect(() => {
+    if (devId.current) {
+      let { duration } = items.get(thisId);
+      let hours = duration[0];
+      let mins = duration.substring(2, 4);
+
+      switch (mins) {
+        case "15":
+          mins = ".25";
+          break;
+        case ".30":
+          mins = ".50";
+          break;
+        case "45":
+          mins = ".75";
+          break;
+        default:
+          mins = "";
+      }
+
+      hours += mins;
+      let newDevItem = opsItems.get(devId.current);
+
+      newDevItem["completed"] = hours;
+      newDevItem["timestamp"] = dayjs().format("h:mm A");
+      //Compute the remaining time
+      let { completed, estimate } = newDevItem;
+      if (completed && estimate)
+        newDevItem["remaining"] = parseFloat(estimate) - parseFloat(completed);
+      else {
+        newDevItem["remaining"] = null;
+      }
+      let newMap = opsItems;
+      newMap[devId.current] = newDevItem;
+
+      setOpsItems(new Map(newMap));
+    }
+  }, [items]);
 
   function handleConnection({ id }) {
     //id is the id for the devops item
@@ -166,7 +208,7 @@ export default function SheetItem({ thisId }) {
     if (sheetToDev.has(id)) {
       const newMap = sheetToDev;
       newMap.set(id, thisId);
-
+      devId.current = id;
       setSheetToDev(new Map(newMap));
     }
   }

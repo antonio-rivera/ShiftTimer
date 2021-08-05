@@ -90,7 +90,7 @@ export default function DevItem({ id }) {
   }
 
   //Grab props that should be displayed/rendered
-  let { timestamp, remaining } = items.get(id);
+  let { timestamp, remaining, completed } = items.get(id);
 
   return (
     <Container>
@@ -101,7 +101,12 @@ export default function DevItem({ id }) {
         onChange={(e) => handleChange(e)}
       />
       <label htmlFor="completed">Completed: </label>
-      <Input type="text" name="completed" onChange={(e) => handleChange(e)} />
+      <Input
+        type="text"
+        name="completed"
+        onChange={(e) => handleChange(e)}
+        value={completed}
+      />
       <label htmlFor="remaining">Remaining: </label>
       <ItemSpan>{remaining}</ItemSpan>
       <label htmlFor="estimate">Original Estimate:</label>
